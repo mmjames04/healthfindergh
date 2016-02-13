@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Healthfindergh</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<div class='container'>
+	<header class='nav navbar'>
+		<div id="current_user">
+		<% if current_user %>
+			<img id="profile_pic" src="<%= current_user.photo %>">
+			Welcome <%= current_user.username %>
+			<%= link_to "Sign Out", signout_path %>
+		<% else %>
+			<%= link_to "Sign in with Twitter", "/auth/twitter" %>
+		<% end %>
+		</div>
+	</header>
+
+<%= yield %>
+
+</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+<script>
+
+	navigator.geolocation.getCurrentPosition(function(position){
+		var current_lat = position.coords.latitude;
+		var current_long = position.coords.longitude;
+	});
+
+
+	// var map = L.map('map').setView([current_lat, current_long], 13);
+	var map = L.map('map').setView([5.53282, -0.2177], 14);
+
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+	    maxZoom: 18,
+	    id: 'jamescorey82.cigwmmw8k0s9tvkm5oddb184s',
+	    accessToken: 'pk.eyJ1IjoiamFtZXNjb3JleTgyIiwiYSI6ImNpZ3dtbXhmbjBzNnQ0bW0zeGYzNjVwdTAifQ.SES6Vh2bG_ltfmXzLkWBeg'
+	}).addTo(map);
+
+		<% @facilities.each do |facility| %>
+			<% if facility.latitude %>
+		  		var marker = L.marker([<%= facility.latitude %>, <%= facility.longitude %>]).addTo(map);
+		  		marker.bindPopup('<%= link_to facility.name, facility %>');
+		  	<% end %>
+		<% end %>
+	</script>
+
+</body>
+</html>
