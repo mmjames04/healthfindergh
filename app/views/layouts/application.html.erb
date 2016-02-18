@@ -41,6 +41,7 @@
 	// var map = L.map('map').setView([current_lat, current_long], 13);
 	var map = L.map('map').setView([5.53282, -0.2177], 14);
 
+
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
 	    maxZoom: 18,
@@ -48,12 +49,22 @@
 	    accessToken: 'pk.eyJ1IjoiamFtZXNjb3JleTgyIiwiYSI6ImNpZ3dtbXhmbjBzNnQ0bW0zeGYzNjVwdTAifQ.SES6Vh2bG_ltfmXzLkWBeg'
 	}).addTo(map);
 
-		<% @facilities.each do |facility| %>
-			<% if facility.latitude %>
-		  		var marker = L.marker([<%= facility.latitude %>, <%= facility.longitude %>]).addTo(map);
-		  		marker.bindPopup('<%= link_to facility.name, facility %>');
-		  	<% end %>
-		<% end %>
+	$.ajax({
+		method: "GET",
+		url: "/facilities.json",
+		dataType: "json"
+	}).done(function(results){
+		$.each(results, function(i, result){
+			if (result.latitude){
+				var marker = L.marker([result.latitude, result.longitude]).addTo(map);
+				marker.bindPopup('<a href="/facilities/'+ result.id + '">'+ result.name +'</a>');
+			}
+		});
+
+	});
+
+	// var marker = L.marker([<%#= facility.latitude %>, <%#= facility.longitude %>]).addTo(map);
+	// marker.bindPopup('<%#= link_to facility.name, facility %>');
 	</script>
 
 </body>

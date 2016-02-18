@@ -4,7 +4,11 @@ class FacilitiesController < ApplicationController
   # GET /facilities
   # GET /facilities.json
   def index
-    @facilities = Facility.within(5, :origin =>[5.53282, -0.2177])
+    @facilities = Facility.all
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   # GET /facilities/1
