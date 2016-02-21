@@ -32,15 +32,18 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 <script>
 
+	var current_lat = 0;
+	var current_long = 0;
+
 	navigator.geolocation.getCurrentPosition(function(position){
-		var current_lat = position.coords.latitude;
-		var current_long = position.coords.longitude;
-	});
+		// current_lat = position.coords.latitude;
+		// current_long = position.coords.longitude;
+		current_lat = 5.53282;
+		current_long = -0.2177;
 
-
-	// var map = L.map('map').setView([current_lat, current_long], 13);
-	var map = L.map('map').setView([5.53282, -0.2177], 14);
-
+	var map = L.map('map').setView([current_lat, current_long], 13);
+console.log(current_lat);
+console.log(current_long);
 
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -54,17 +57,48 @@
 		url: "/facilities.json",
 		dataType: "json"
 	}).done(function(results){
+			var low_lat = (current_lat - 0.15);
+			console.log(low_lat);
+			var high_lat = (current_lat + 0.15);
+			console.log(high_lat);
+			var low_long = (current_long - 0.15);
+			var high_long = (current_long + 0.15);
+
 		$.each(results, function(i, result){
-			if (result.latitude){
+			if (low_lat < result.latitude && result.latitude < high_lat && low_long < result.longitude && result.longitude < high_long) {
+			// if (result.latitude < 6 && result.latitude > 5 && result.longitude > -0.7 && result.longitude < 0.3) {
 				var marker = L.marker([result.latitude, result.longitude]).addTo(map);
 				marker.bindPopup('<a href="/facilities/'+ result.id + '">'+ result.name +'</a>');
 			}
 		});
 
-	});
+		map.on('moveend', function(){
+			var center = map.getCenter();
+			current_lat = center.lat;
+			current_long = center.lng;
+			console.log(current_lat);
+			console.log(current_long);
 
-	// var marker = L.marker([<%#= facility.latitude %>, <%#= facility.longitude %>]).addTo(map);
-	// marker.bindPopup('<%#= link_to facility.name, facility %>');
+			var low_lat = (current_lat - 0.15);
+			console.log(low_lat);
+			var high_lat = (current_lat + 0.15);
+			console.log(high_lat);
+			var low_long = (current_long - 0.15);
+			var high_long = (current_long + 0.15);
+
+		$.each(results, function(i, result){
+			if (low_lat < result.latitude && result.latitude < high_lat && low_long < result.longitude && result.longitude < high_long) {
+			// if (result.latitude < 6 && result.latitude > 5 && result.longitude > -0.7 && result.longitude < 0.3) {
+				var marker = L.marker([result.latitude, result.longitude]).addTo(map);
+				marker.bindPopup('<a href="/facilities/'+ result.id + '">'+ result.name +'</a>');
+			}
+		});
+
+		});
+
+	});
+		});
+
 	</script>
 
 </body>
