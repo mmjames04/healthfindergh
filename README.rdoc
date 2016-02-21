@@ -1,28 +1,10 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+HealthFinderGH is an app to help Ghanaians find great health care!  
 
-Things you may want to cover:
+Users can find a health facility near them, get directions to the facility, and review the facility and doctors.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
+Technologies - PostgreSQL, Ruby on Rails, jQuery, Leaflet.js, Bootstrap
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
