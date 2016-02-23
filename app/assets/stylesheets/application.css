@@ -14,7 +14,17 @@
  *= require_self
  */
 
+@import "dist/leaflet.awesome-markers.css";
+
 #profile_pic {
 	border-radius: 50%;
 }
 
+#logo {
+	text-align: center;
+}
+
+.awesome-marker i {
+        font-size: 18px;
+        margin-top: 8px;
+    }
