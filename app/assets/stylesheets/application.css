@@ -18,6 +18,11 @@
 
 #profile_pic {
 	border-radius: 50%;
+	height: 35px;
+}
+
+#current_user {
+	margin-top: 5px;
 }
 
 #logo {

@@ -13,16 +13,21 @@
 
 <div class='container'>
 	<header class='nav navbar'>
-		<div id="current_user">
+		<div id="current_user" class="col-md-3">
 		<% if current_user %>
 			<img id="profile_pic" src="<%= current_user.photo %>">
 			Welcome <%= current_user.username %>!
 			<br/>
 			<%= link_to "Sign Out", signout_path %>
 		<% else %>
-			<%= link_to "Sign in with Twitter", "/auth/twitter" %>
+			<%= link_to image_tag("twitter_button.png"), "/auth/twitter" %>
 		<% end %>
 		</div>
+		<div id='logo' class='col-md-6'>
+			<h1>HealthFinder.gh</h1>
+			<h5>Find a quality health care near you!</h5>
+		</div>
+
 	</header>
 
 <%= yield %>
