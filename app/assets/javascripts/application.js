@@ -14,91 +14,65 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require dist/leaflet.awesome-markers.js
+//= require leaflet-routing-machine/dist/leaflet-routing-machine.js
 //= require_tree .
 
 navigator.geolocation.getCurrentPosition(function(position){
-	
-	var current_lat = position.coords.latitude;
+	var current_lat = position.coords.latitutde;
 	var current_long = position.coords.longitude;
 
 	if (current_lat < 12 && current_lat > 4 && current_long > -7 && current_long < 2){
 	} else {
-		current_lat = 5.5423;
-		current_long = -0.2177;
+		current_lat = 5.622460;
+		current_long = -0.173571;
 	}
 
-	var map = L.map('map').setView([current_lat, current_long], 16);
+	var show_map = L.map('show_map');
 
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
 	    maxZoom: 18,
 	    id: 'jamescorey82.cigwmmw8k0s9tvkm5oddb184s',
 	    accessToken: 'pk.eyJ1IjoiamFtZXNjb3JleTgyIiwiYSI6ImNpZ3dtbXhmbjBzNnQ0bW0zeGYzNjVwdTAifQ.SES6Vh2bG_ltfmXzLkWBeg'
-	}).addTo(map);
+	}).addTo(show_map);
 
-	var myMarker = L.marker([current_lat,current_long], {icon: L.AwesomeMarkers.icon({icon: 'home', prefix: 'fa', markerColor: 'green'})}).addTo(map);
-	myMarker.bindPopup('My Location');
+	var id = $("#facility_id").text();
+	var url = "/facilities/" + id + ".json"
 
 	$.ajax({
 		method: "GET",
-		url: "/facilities.json",
+		url: url,
 		dataType: "json"
-	}).done(function(results){
+	}).done(function(result){
 
-		var markers = new L.FeatureGroup();
+		var panLat = (current_lat + result.latitude)/2
+		var panLong = (current_long + result.longitude)/2
 
-		function populate(){
-			var center = map.getCenter();
-			current_lat = center.lat;
-			current_long = center.lng;
+		show_map.panTo(new L.LatLng(panLat, panLong));
 
-			var low_lat = (current_lat - 0.1);
-			var high_lat = (current_lat + 0.1);
-			var low_long = (current_long - 0.1);
-			var high_long = (current_long + 0.1);
+		L.Routing.control({
+			waypoints: [
+				L.latLng(current_lat, current_long),
+				L.latLng(result.latitude, result.longitude)
+			]
+		}).addTo(show_map);
 
-			$.each(results, function(i, result){
-				var category = result.category.toLowerCase()
-				if ((category == 'clinic' || category == 'polyclinic' || category == 'health centre') && (low_lat < result.latitude && result.latitude < high_lat && low_long < result.longitude && result.longitude < high_long)){
-					var marker = L.marker([result.latitude, result.longitude], {icon: L.AwesomeMarkers.icon({icon: 'medkit', prefix: 'fa', markerColor: 'blue'})}).addTo(map);
-					marker.bindPopup('<a href="/facilities/'+ result.id + '">'+ result.name +'</a>');
-					markers.addLayer(marker);
-				} else if ((category == 'maternity home') && (low_lat < result.latitude && result.latitude < high_lat && low_long < result.longitude && result.longitude < high_long)) {
-					var marker = L.marker([result.latitude, result.longitude], {icon: L.AwesomeMarkers.icon({icon: 'female', prefix: 'fa', markerColor: 'pink'})}).addTo(map);
-					marker.bindPopup('<a href="/facilities/'+ result.id + '">'+ result.name +'</a>');
-					markers.addLayer(marker);
-				} else if ((category == 'hospital' || category == 'district hospital' || category == 'municipal hospital' || category == 'teaching hospital') && (low_lat < result.latitude && result.latitude < high_lat && low_long < result.longitude && result.longitude < high_long)) {
-					var marker = L.marker([result.latitude, result.longitude], {icon: L.AwesomeMarkers.icon({icon: 'h-square', prefix: 'fa', markerColor: 'red'})}).addTo(map);
-					marker.bindPopup('<a href="/facilities/'+ result.id + '">'+ result.name +'</a>');
-					markers.addLayer(marker);
-				} else if ((category == 'psychiatric hospital') && (low_lat < result.latitude && result.latitude < high_lat && low_long < result.longitude && result.longitude < high_long)) {
-					var marker = L.marker([result.latitude, result.longitude], {icon: L.AwesomeMarkers.icon({icon: 'user-md', prefix: 'fa', markerColor: 'purple'})}).addTo(map);
-					marker.bindPopup('<a href="/facilities/'+ result.id + '">'+ result.name +'</a>');
-					markers.addLayer(marker);
-				} else if ((category == 'training institution') && (low_lat < result.latitude && result.latitude < high_lat && low_long < result.longitude && result.longitude < high_long)) {
-					var marker = L.marker([result.latitude, result.longitude], {icon: L.AwesomeMarkers.icon({icon: 'graduation-cap', prefix: 'fa', markerColor: 'orange'})}).addTo(map);
-					marker.bindPopup('<a href="/facilities/'+ result.id + '">'+ result.name +'</a>');
-					markers.addLayer(marker);
-				} else if ((category == 'chps') && (low_lat < result.latitude && result.latitude < high_lat && low_long < result.longitude && result.longitude < high_long)) {
-					var marker = L.marker([result.latitude, result.longitude], {icon: L.AwesomeMarkers.icon({icon: 'stethoscope', prefix: 'fa', markerColor: 'cadetblue'})}).addTo(map);
-					marker.bindPopup('<a href="/facilities/'+ result.id + '">'+ result.name +'</a>');
-					markers.addLayer(marker);
-				} else if (low_lat < result.latitude && result.latitude < high_lat && low_long < result.longitude && result.longitude < high_long) {
-					var marker = L.marker([result.latitude, result.longitude], {icon: L.AwesomeMarkers.icon({icon: 'building', prefix: 'fa', markerColor: 'black'})}).addTo(map);
-					marker.bindPopup('<a href="/facilities/'+ result.id + '">'+ result.name +'</a>');
-					markers.addLayer(marker);
-				} 
-			});
-			return false;
+		var myMarker = L.marker([current_lat,current_long], {icon: L.AwesomeMarkers.icon({icon: 'home', prefix: 'fa', markerColor: 'green'})}).addTo(show_map);
+		myMarker.bindPopup('My Location');
+
+		var healthMarker = L.marker([result.latitude,result.longitude], {icon: L.AwesomeMarkers.icon({icon: 'medkit', prefix: 'fa', markerColor: 'green'})}).addTo(show_map);
+		healthMarker.bindPopup(result.name);
+
+		if (result.phone && result.website) {
+			$('#phoneWebsite').html("<p>" + result.phone + " | <a href='" + result.website + "'>Visit Website</a></p>");
+		} else if (result.phone && !result.website) {
+			$('#phoneWebsite').html("<p>" + result.phone + " | <a href='/facilities/" + result.id + "/edit'>Add Website</a></p>")
+		} else if (!result.phone && result.website) {
+			$('#phoneWebsite').html("<p><a href='facilities/" + result.id + "/edit'>Add Phone</a> | " + result.website + "</p>")
+		} else {
+			$('#phoneWebsite').html("<p><a href='/facilities/" + result.id + "/edit'>Add Phone</a> | <a href='/facilities/" + result.id + "/edit'>Add Website</a></p>")
 		}
 
-		map.addLayer(markers)
-		populate();
-
-		map.on('moveend', function(){
-			var markers = new L.FeatureGroup();
-			map.addLayer(markers);
-			populate();
-		});
 	});
 });
+

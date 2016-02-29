@@ -68,5 +68,6 @@
     "shasum": "9ac4228adaa0f17b83e4b1063f858771ee399b08",
     "tarball": "http://registry.npmjs.org/leaflet-routing-machine/-/leaflet-routing-machine-2.6.2.tgz"
   },
-  "_resolved": "https://registry.npmjs.org/leaflet-routing-machine/-/leaflet-routing-machine-2.6.2.tgz"
+  "_resolved": "https://registry.npmjs.org/leaflet-routing-machine/-/leaflet-routing-machine-2.6.2.tgz",
+  "readme": "ERROR: No README data found!"
 }

@@ -15,7 +15,10 @@ class FacilitiesController < ApplicationController
   # GET /facilities/1.json
   def show
     @facility = Facility.find(params[:id])
-    @facilities = Facility.all
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   # GET /facilities/new

@@ -1,54 +1,41 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-md-6">
+    <h2><%= @facility.name %></h2>
+    <p><%= @facility.town %>, <%= @facility.district %> District, <%= @facility.region %> Region</p>
+    <div id="phoneWebsite"></div>
+  </div>
 
-<p>
-  <strong>Name:</strong>
-  <%= @facility.name %>
-</p>
+  <div class="col-md-3 col-md-offset-3" style="margin-top: 25px;">
+    <h5 id="stars">2.5 <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-half-o"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i></h5>
+    <p><%= @facility.category %></p>
+  </div>
+</div>
 
-<p>
-  <strong>Category:</strong>
-  <%= @facility.category %>
-</p>
+<div class="row">
+  <div id="show_map" class="well col-md-12"></div>
+</div>
 
-<p>
-  <strong>Town:</strong>
-  <%= @facility.town %>
-</p>
+<p id="facility_id" style="display: none;"><%= @facility.id %></p>
 
-<p>
-  <strong>District:</strong>
-  <%= @facility.district %>
-</p>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <h3>Reviews</h3>
+    <table class="table">
+      <tr>
+        <th>Rating</th>
+        <th>Comments</th>
+        <th>Rater</th>
+      </tr>
+      <tr>
+        <td>4 Stars</td>
+        <td>This clinic is better than most.  The doctor was nice and on time.</td>
+        <td>Kofi C.</td>
+      </tr>
+    </table>
+  </div>
+</div>
 
-<p>
-  <strong>Region:</strong>
-  <%= @facility.region %>
-</p>
-
-<p>
-  <strong>Latitude:</strong>
-  <%= @facility.latitude %>
-</p>
-
-<p>
-  <strong>Longitude:</strong>
-  <%= @facility.longitude %>
-</p>
-
-<p>
-  <strong>Phone:</strong>
-  <%= @facility.phone %>
-</p>
-
-<p>
-  <strong>Website:</strong>
-  <%= @facility.website %>
-</p>
-
-<p>
-  <strong>Specialty:</strong>
-  <%= @facility.specialty %>
-</p>
-
+<footer class="col-md-12 text-center">
 <%= link_to 'Edit', edit_facility_path(@facility) %> |
 <%= link_to 'Back', facilities_path %>
+</footer>
