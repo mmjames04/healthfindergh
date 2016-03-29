@@ -51,4 +51,6 @@ group :development, :test do
   gem 'spring'
 end
 
+gem 'puma' 
+
 ruby '2.1.2'
