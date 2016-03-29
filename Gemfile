@@ -8,6 +8,7 @@ gem 'geokit-rails'
 gem 'font-awesome-rails', '~> 4.5'
 gem 'geoip'
 gem 'letsrate'
+gem 'rails_12factor'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
