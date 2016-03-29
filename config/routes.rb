@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 
-  post '/rate' => 'rater#create', :as => 'rate'
   root 'facilities#index'
+
+  post '/rate' => 'rater#create', :as => 'rate'
 
   get "/auth/twitter/callback" => "sessions#create"
   get 'auth/failure', to: redirect('/')
