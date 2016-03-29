@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.1.2'
 
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.5.1'
 gem 'omniauth'
@@ -7,6 +8,7 @@ gem 'geokit-rails'
 gem 'font-awesome-rails', '~> 4.5'
 gem 'geoip'
 gem 'letsrate'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use postgresql as the database for Active Record
