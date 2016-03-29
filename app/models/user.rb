@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 
 	has_many :reviews
+	letsrate_rater
 
 	def self.create_with_omniauth(auth)
 		user = User.new

@@ -6,7 +6,7 @@
   </div>
 
   <div class="col-md-3 col-md-offset-3" style="margin-top: 25px;">
-    <h5 id="stars">2.5 <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-half-o"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i></h5>
+    <h5 id="stars"> <%= rating_for @facility, "quality" %> </h5>
     <p><%= @facility.category %></p>
   </div>
 </div>

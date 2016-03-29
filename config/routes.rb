@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  post '/rate' => 'rater#create', :as => 'rate'
   root 'facilities#index'
 
   get "/auth/twitter/callback" => "sessions#create"
